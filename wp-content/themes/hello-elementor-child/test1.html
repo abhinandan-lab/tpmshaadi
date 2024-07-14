@@ -1,0 +1,246 @@
+
+
+<style>
+    #regform1 label {
+        font-size: 0.9rem;
+        color: #646464;
+    }
+    
+    #regform1 input, select {
+        outline: 0px;
+        border: 0;
+        border-bottom: 2px solid #9C27B0;
+        border-radius: 0px;
+        padding-left: 0.4rem;
+        color: #9C27B0;
+    }
+    
+    #regform1 .fieldgroup {
+        margin-bottom: 1.6rem;
+    }
+    
+    #regform1 .row-c {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        justify-content: space-between;
+        
+    }
+    
+    #regform1 .row-c .fieldgroup {
+        width: 50%;
+    }
+    
+    #regform1 optgroup {
+        font-weight: 300;
+        font-size: 0.9rem;
+        color: #646464;
+    }
+    #regform1 option {
+        color: #9C27B0;
+    }
+    
+    #regform1 .gender {
+        display: flex;
+        justify-content: center;
+        /*border: 1px solid black;*/
+        
+    }
+    
+    #regform1 .gender .contt {
+        display: flex;
+        gap: .8rem;
+    }
+    
+    #regform1 .gender .contt label {
+        background-color: transparent;
+        border: 2px solid #9C27B0;
+        padding: 6px 16px;
+        border-radius: 22px;
+        color: #9C27B0;
+        font-size: 1rem;
+        font-weight: 500;
+    }
+    
+    #regform1 .gender .contt label:hover,
+    #regform1 .gender .contt label:active {
+        color: white;
+        background-color: #9C27B0;
+        
+    }
+    
+    
+        #regform1 .gender .contt label.active {
+        color: white;
+        background-color: #9C27B0;
+    }
+    
+     #regform1 .gender .contt label input[type='radio']{
+         display: none;
+     }
+     
+     
+     #regform1 .cont-flex  {
+         text-align: center;
+     }
+     
+     #regform1 .cont-flex button {
+        border: none;
+        border-bottom: 2px solid white;
+        padding: 0 6px;
+        font-weight: 500;
+        color: #9C27B0;
+        background: none;
+     }
+     
+      #regform1 .cont-flex button:hover {
+        border-bottom: 2px solid #9C27B0;
+      }
+
+
+      #regform1 .errors {
+        font-weight: 400;
+        font-size: 0.9rem;
+        color: red;
+      }
+     
+
+    
+</style>
+
+
+<form id="customForm" method="POST">
+    <input type="hidden" name="action" value="registers1">
+    <input type="hidden" name="regsiter1_action_nonce" id="regsiter1_action_nonce">
+    
+
+
+
+<div class="fieldgroup">
+    <label for="email">Email</label>
+    <input required name="email" type="email" placeholder="Enter your email">
+</div>
+
+
+<div class="fieldgroup">
+    <span class="errors">d</span>
+</div>
+
+    
+    <div class="cont-flex">
+    <button class="submit-btn" type="submit">Submit</button>
+    </div>
+</form>
+
+
+
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const genderLabels = document.querySelectorAll('#regform1 .gender .contt label');
+
+        genderLabels.forEach(label => {
+            label.addEventListener('click', function() {
+                // Remove 'active' class from all labels
+                genderLabels.forEach(l => l.classList.remove('active'));
+                
+                // Add 'active' class to the clicked label
+                this.classList.add('active');
+            });
+        });
+    });
+</script>
+
+
+
+
+<script>
+    jQuery(document).ready(function($) {
+        // Fetch the nonce via an AJAX request
+        $.ajax({
+            url: ajax_object.ajax_url,
+            method: 'GET',
+            data: {
+                action: 'generate_nonce',
+                nonce_action: 'regsiter1_action_nonce'
+            },
+            success: function(nonce) {
+                $('#regsiter1_action_nonce').val(nonce);
+            },
+            error: function() {
+                console.error('Failed to fetch nonce');
+            }
+        });
+    
+});
+
+
+
+
+jQuery(document).ready(function($) {
+    // Generate nonce
+    var nonce = $('#regsiter1_action_nonce').val();
+
+    // AJAX form submission
+    $('#customForm').on('submit', function(event) {
+        event.preventDefault();
+
+        $.ajax({
+            type: 'POST',
+            url: ajax_object.ajax_url,
+            data: {
+                action: 'registers1',
+                security: nonce,
+                email: $('input[name="email"]').val()
+            },
+            success: function(response) {
+                // Handle success response
+                console.log(response.data.message); // Example: Log success message
+            },
+            error: function(error) {
+                // Handle error response
+                console.log(error.responseText); // Example: Log error message
+            }
+        });
+    });
+});
+
+    
+    </script>
+    
+    
+    
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
